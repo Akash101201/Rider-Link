@@ -1,0 +1,39 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "rooms": {
+      "$code": {
+        ".read": "auth != null",
+        ".write": "auth != null && ((newData.exists() && newData.child('hostUid').val() === auth.uid && (!data.exists() || data.child('status').val() === 'ended' || (now - data.child('createdAt').val() > 7200000) || (!data.child('members').exists() && (now - data.child('lastActivityAt').val() > 900000)))) || (!newData.exists() && (data.child('hostUid').val() === auth.uid || data.child('status').val() === 'ended' || (now - data.child('createdAt').val() > 7200000) || (!data.child('members').exists() && (now - data.child('lastActivityAt').val() > 900000)))))",
+        "status": {
+          ".write": "auth != null && data.parent().child('hostUid').val() === auth.uid",
+          ".validate": "newData.val() === 'active' || newData.val() === 'ended'"
+        },
+        "lastActivityAt": {
+          ".write": "auth != null && (data.parent().child('slots/0').val() === auth.uid || data.parent().child('slots/1').val() === auth.uid || data.parent().child('slots/2').val() === auth.uid || data.parent().child('slots/3').val() === auth.uid || data.parent().child('slots/4').val() === auth.uid || data.parent().child('slots/5').val() === auth.uid)",
+          ".validate": "newData.isNumber() && newData.val() <= now + 5000"
+        },
+        "slots": {
+          "$slot": {
+            ".validate": "$slot === '0' || $slot === '1' || $slot === '2' || $slot === '3' || $slot === '4' || $slot === '5'",
+            ".write": "auth != null && ((newData.exists() && (!data.exists() || data.val() === auth.uid) && newData.val() === auth.uid && data.parent().parent().child('status').val() === 'active' && (now - data.parent().parent().child('createdAt').val() <= 7200000) && (data.parent().parent().child('members').exists() || (now - data.parent().parent().child('lastActivityAt').val() <= 900000))) || (!newData.exists() && (data.val() === auth.uid || data.parent().parent().child('hostUid').val() === auth.uid)))"
+          }
+        },
+        "members": {
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid && (!newData.exists() || (data.parent().parent().child('status').val() === 'active' && (now - data.parent().parent().child('createdAt').val() <= 7200000) && (data.parent().parent().child('slots/0').val() === auth.uid || data.parent().parent().child('slots/1').val() === auth.uid || data.parent().parent().child('slots/2').val() === auth.uid || data.parent().parent().child('slots/3').val() === auth.uid || data.parent().parent().child('slots/4').val() === auth.uid || data.parent().parent().child('slots/5').val() === auth.uid)))"
+          }
+        },
+        "signals": {
+          "$toUid": {
+            ".read": "auth != null && auth.uid === $toUid",
+            "$fromUid": {
+              ".write": "auth != null && (auth.uid === $fromUid || auth.uid === $toUid)"
+            }
+          }
+        }
+      }
+    }
+  }
+}

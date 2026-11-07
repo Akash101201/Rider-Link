@@ -1,0 +1,1592 @@
+/* ==========================================================================
+   RiderLink — Mobile-First "Moto TFT Cockpit" Design System
+   Inspired by modern motorcycle digital instrument clusters (KTM / Ducati / BMW)
+   ========================================================================== */
+
+:root {
+  --bg-void: #07090c;
+  --bg-cockpit: #0b0e14;
+  --bg-surface: #131822;
+  --bg-surface-elevated: #1a2230;
+  --bg-input: #0e131b;
+  --border-subtle: #242f42;
+  --border-strong: #33425b;
+
+  --text-primary: #f4f7fb;
+  --text-secondary: #98a6bd;
+  --text-muted: #64748b;
+
+  --accent-amber: #ff6b00;
+  --accent-amber-glow: rgba(255, 107, 0, 0.32);
+  --accent-cyan: #00e5ff;
+  --accent-emerald: #00e676;
+  --accent-emerald-glow: rgba(0, 230, 118, 0.28);
+  --accent-danger: #ff3d57;
+  --accent-volt: #ffd600;
+
+  --font-display: 'Chakra Petch', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+:root[data-theme='daylight'] {
+  --bg-void: #dfe5ee;
+  --bg-cockpit: #eef2f7;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f5f8fc;
+  --bg-input: #ffffff;
+  --border-subtle: #cbd5e1;
+  --border-strong: #94a3b8;
+
+  --text-primary: #0b111b;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+
+  --accent-amber: #e65c00;
+  --accent-amber-glow: rgba(230, 92, 0, 0.2);
+  --accent-cyan: #0086a8;
+  --accent-emerald: #009e4f;
+  --accent-emerald-glow: rgba(0, 158, 79, 0.2);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100dvh;
+  background-color: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+/* Mobile-first Cockpit Frame (full screen on phones, centered cockpit bezel on desktop) */
+.cockpit-shell {
+  width: 100%;
+  max-width: 460px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: calc(10px + var(--safe-top)) 14px calc(12px + var(--safe-bottom));
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(255, 107, 0, 0.08), transparent 55%),
+    linear-gradient(180deg, var(--bg-cockpit) 0%, var(--bg-void) 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (min-width: 520px) {
+  body {
+    display: flex;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 50% 15%, #161d29 0%, #05070a 70%);
+  }
+
+  .cockpit-shell {
+    border-left: 1px solid var(--border-subtle);
+    border-right: 1px solid var(--border-subtle);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+  }
+}
+
+/* ==========================================================================
+   HOME / PADDOCK SCREEN
+   ========================================================================== */
+
+.tft-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 2px;
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.05;
+}
+
+.brand-sub {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--accent-amber);
+}
+
+.tft-status-bar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mode-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--accent-cyan);
+}
+
+.icon-pill-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.15s ease;
+}
+
+.icon-pill-btn:active {
+  transform: scale(0.94);
+  border-color: var(--accent-amber);
+}
+
+.capability-ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px;
+  border-radius: 10px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.capability-ribbon span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cockpit-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-label {
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+
+.cockpit-input {
+  width: 100%;
+  height: 52px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-strong);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  user-select: text;
+}
+
+.cockpit-input:focus,
+.plate-code-input:focus {
+  outline: none;
+  border-color: var(--accent-amber);
+  box-shadow: 0 0 0 3px var(--accent-amber-glow);
+}
+
+/* Start Pack Ride — Ignition Card */
+.ignition-card {
+  background:
+    linear-gradient(135deg, rgba(255, 107, 0, 0.16) 0%, rgba(19, 24, 34, 0.92) 65%),
+    var(--bg-surface);
+  border: 1.5px solid rgba(255, 107, 0, 0.45);
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ignition-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.eyebrow-tag {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent-amber);
+}
+
+.expiry-note {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.ignition-btn {
+  width: 100%;
+  min-height: 74px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #ff7b1a 0%, #f25500 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 10px 26px var(--accent-amber-glow);
+  transition: transform 0.12s ease, filter 0.15s ease;
+}
+
+.ignition-btn:active:not(:disabled) {
+  transform: scale(0.98);
+  filter: brightness(1.06);
+}
+
+.ignition-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.ignition-btn__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(9, 11, 14, 0.26);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ignition-btn__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ignition-btn__text strong {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.ignition-btn__text small {
+  font-size: 0.76rem;
+  opacity: 0.92;
+}
+
+/* License-Plate Join Card */
+.join-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.plate-preview {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  letter-spacing: 0.1em;
+}
+
+.plate-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plate-code-input {
+  width: 100%;
+  height: 60px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-strong);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  user-select: text;
+}
+
+.plate-slots-indicator {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  padding: 0 8px;
+}
+
+.plate-slot-dot {
+  height: 4px;
+  border-radius: 99px;
+  background: var(--border-subtle);
+  transition: background-color 0.15s ease;
+}
+
+.plate-slot-dot.is-filled {
+  background: var(--accent-cyan);
+}
+
+.btn-primary,
+.btn-secondary {
+  min-height: 54px;
+  padding: 0 18px;
+  border-radius: 13px;
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.12s ease, opacity 0.15s ease;
+}
+
+.btn-primary {
+  border: none;
+  background: var(--accent-amber);
+  color: #ffffff;
+}
+
+.btn-secondary {
+  border: 1.5px solid var(--border-strong);
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+}
+
+.btn-join-pack {
+  width: 100%;
+  min-height: 56px;
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.btn-join-pack:disabled {
+  opacity: 0.4;
+  border-color: var(--border-subtle);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.cockpit-alert-banner--error {
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: rgba(255, 61, 87, 0.14);
+  border: 1px solid rgba(255, 61, 87, 0.55);
+  color: #ff8a99;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.home-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.footer-chip-btn {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.history-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.history-item__main {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+
+.history-item__main strong {
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+}
+
+/* ==========================================================================
+   ACTIVE RIDE ROOM — MOTORCYCLE TFT COCKPIT
+   ========================================================================== */
+
+.room-screen {
+  height: 100dvh;
+  overflow: hidden;
+  gap: 8px;
+}
+
+.cluster-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 15px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+}
+
+.cluster-speedo {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  min-width: 68px;
+}
+
+.cluster-speedo__digits {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.cluster-speedo__unit {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  letter-spacing: 0.08em;
+}
+
+.cluster-plate-btn {
+  flex: 1;
+  padding: 5px 10px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 107, 0, 0.45);
+  background: rgba(255, 107, 0, 0.1);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cluster-plate-btn__code {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent-amber);
+}
+
+.cluster-plate-btn__sub {
+  font-family: var(--font-display);
+  font-size: 0.66rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+
+.cluster-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Mode Switcher Tabs */
+.cockpit-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: var(--bg-surface);
+  padding: 4px;
+  border-radius: 13px;
+  border: 1px solid var(--border-subtle);
+}
+
+.cockpit-tab {
+  height: 40px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.cockpit-tab.is-active {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+  box-shadow: inset 0 -2px 0 var(--accent-amber);
+}
+
+/* Road Alert Toast */
+.road-alert-toast {
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: var(--bg-surface-elevated);
+  border-left: 4px solid var(--toast-accent, var(--accent-amber));
+  border-top: 1px solid var(--border-strong);
+  border-right: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: toastSlideIn 0.18s ease-out;
+}
+
+.road-alert-toast strong {
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  letter-spacing: 0.06em;
+  color: var(--toast-accent, var(--accent-amber));
+}
+
+.road-alert-toast span {
+  font-size: 0.76rem;
+  color: var(--text-primary);
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stage: 2x3 Helmet Pods Grid */
+.cockpit-stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.pods-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.rider-pod {
+  position: relative;
+  border-radius: 14px;
+  padding: 9px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rider-pod--occupied {
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.03) 0%, transparent 60%),
+    var(--bg-surface);
+  border: 1.5px solid var(--border-subtle);
+}
+
+.rider-pod--occupied::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--pod-color, var(--accent-amber));
+}
+
+.rider-pod--occupied.is-speaking {
+  border-color: var(--accent-emerald);
+  box-shadow: 0 0 0 2px var(--accent-emerald-glow);
+}
+
+.rider-pod--occupied.is-lost {
+  border-color: var(--accent-danger);
+}
+
+.rider-pod--empty {
+  border: 1.5px dashed var(--border-subtle);
+  background: rgba(19, 24, 34, 0.38);
+  color: var(--text-muted);
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+}
+
+.rider-pod__empty-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 99px;
+  border: 1px solid var(--border-subtle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rider-pod__empty-label {
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.rider-pod__empty-sub {
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+}
+
+.rider-pod__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding-left: 4px;
+}
+
+.rider-pod__badges {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.role-chip,
+.you-chip {
+  padding: 2px 5px;
+  border-radius: 5px;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.role-chip--lead {
+  background: rgba(255, 107, 0, 0.2);
+  color: var(--accent-amber);
+  border: 1px solid rgba(255, 107, 0, 0.45);
+}
+
+.role-chip--sweep {
+  background: rgba(0, 229, 255, 0.16);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(0, 229, 255, 0.45);
+}
+
+.role-chip--toggle {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+}
+
+.you-chip {
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--text-secondary);
+}
+
+.conn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.conn-pill--live {
+  color: var(--accent-emerald);
+}
+
+.conn-pill--connecting {
+  color: var(--accent-volt);
+}
+
+.conn-pill--reconnecting {
+  color: var(--accent-danger);
+}
+
+.rider-pod__center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 4px;
+}
+
+.helmet-avatar-wrap {
+  position: relative;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.helmet-avatar-wrap.is-speaking {
+  box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.35);
+  animation: voicePulse 0.9s infinite alternate;
+}
+
+@keyframes voicePulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+.rider-pod__identity {
+  min-width: 0;
+  flex: 1;
+}
+
+.rider-pod__name {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rider-pod__telemetry {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.telemetry-speaking {
+  color: var(--accent-emerald);
+  font-weight: 700;
+}
+
+.telemetry-warn {
+  color: var(--accent-danger);
+  font-weight: 700;
+}
+
+.rider-pod__mic-indicator {
+  position: absolute;
+  right: 9px;
+  bottom: 8px;
+  color: var(--text-secondary);
+}
+
+.rider-pod.is-muted .rider-pod__mic-indicator {
+  color: var(--accent-danger);
+}
+
+/* Quick Road Alerts Strip */
+.alert-strip__grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.alert-chip-btn {
+  min-height: 54px;
+  padding: 6px 2px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  transition: transform 0.1s ease, border-color 0.15s ease;
+}
+
+.alert-chip-btn:active:not(:disabled) {
+  transform: scale(0.93);
+  border-color: var(--alert-accent);
+}
+
+.alert-chip-btn:disabled {
+  opacity: 0.45;
+}
+
+.alert-chip-btn__icon {
+  color: var(--alert-accent);
+  display: inline-flex;
+}
+
+.alert-chip-btn__text {
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Bottom Thumb-Zone Comms Deck */
+.comms-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.giant-mic-btn {
+  width: 100%;
+  min-height: 68px;
+  padding: 10px 18px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.15s ease;
+}
+
+.giant-mic-btn:active {
+  transform: scale(0.98);
+}
+
+.giant-mic-btn.is-live {
+  border: 2px solid var(--accent-emerald);
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.2) 0%, rgba(19, 24, 34, 0.95) 100%);
+  color: var(--text-primary);
+  box-shadow: 0 6px 20px var(--accent-emerald-glow);
+}
+
+.giant-mic-btn.is-muted {
+  border: 2px solid var(--accent-danger);
+  background: linear-gradient(135deg, rgba(255, 61, 87, 0.22) 0%, rgba(19, 24, 34, 0.95) 100%);
+  color: var(--text-primary);
+}
+
+.giant-mic-btn__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.giant-mic-btn.is-live .giant-mic-btn__icon {
+  color: var(--accent-emerald);
+}
+
+.giant-mic-btn.is-muted .giant-mic-btn__icon {
+  color: var(--accent-danger);
+}
+
+.giant-mic-btn__copy {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.giant-mic-btn__copy strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+}
+
+.giant-mic-btn__copy small {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+}
+
+.comms-deck__secondary {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 8px;
+}
+
+.btn-stealth {
+  min-height: 50px;
+  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+/* Hold-to-End Safety Button */
+.hold-btn {
+  position: relative;
+  min-height: 50px;
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  background: var(--bg-surface);
+}
+
+.hold-btn--danger {
+  border: 1.5px solid rgba(255, 61, 87, 0.65);
+  color: #ff6e82;
+}
+
+.hold-btn--secondary {
+  border: 1.5px solid var(--border-strong);
+  color: var(--text-primary);
+}
+
+.hold-btn__fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  background: rgba(255, 61, 87, 0.38);
+  pointer-events: none;
+}
+
+.hold-btn__content {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ==========================================================================
+   PACK RADAR MAP (LEAFLET)
+   ========================================================================== */
+
+.pack-radar {
+  position: relative;
+  flex: 1;
+  min-height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: #0d121a;
+}
+
+.pack-radar__canvas {
+  width: 100%;
+  height: 100%;
+  background: #0b1018;
+}
+
+.pack-radar.is-daylight .pack-radar__canvas {
+  background: #e2e8f0;
+}
+
+.pack-radar.is-dark-tiles .leaflet-tile-pane {
+  filter: invert(100%) hue-rotate(180deg) brightness(92%) contrast(92%);
+}
+
+.pack-radar__hud-top {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 500;
+}
+
+.radar-pill {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(9, 11, 14, 0.84);
+  border: 1px solid var(--border-strong);
+  color: var(--accent-cyan);
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.pack-radar__controls {
+  position: absolute;
+  right: 10px;
+  bottom: 18px;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.radar-ctrl-btn {
+  height: 40px;
+  padding: 0 11px;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  background: rgba(9, 11, 14, 0.88);
+  color: #f4f7fb;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.radar-ctrl-btn.is-active {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.radar-div-icon {
+  background: transparent;
+  border: none;
+}
+
+.radar-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.radar-pin.is-stale {
+  opacity: 0.45;
+}
+
+.radar-pin__puck {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #090b0e;
+  border: 2.5px solid var(--pin-color, #ff6b00);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
+}
+
+.radar-pin__arrow {
+  position: absolute;
+  top: -10px;
+  font-size: 0.62rem;
+  color: var(--pin-color, #ff6b00);
+}
+
+.radar-pin__label {
+  margin-top: 2px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(9, 11, 14, 0.88);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 0.64rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.radar-pin__role {
+  margin-left: 4px;
+  color: var(--accent-amber);
+}
+
+/* ==========================================================================
+   STEALTH OLED HUD MODE
+   ========================================================================== */
+
+.stealth-hud {
+  width: 100%;
+  height: 100dvh;
+  background: #000000;
+  color: #d8e1ef;
+  padding: calc(16px + var(--safe-top)) 20px calc(24px + var(--safe-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stealth-hud__top {
+  width: 100%;
+  max-width: 430px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.stealth-hud__exit {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid #263040;
+  background: #0c1017;
+  color: #cbd5e1;
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.stealth-hud__speedo {
+  text-align: center;
+}
+
+.stealth-hud__speed-digits {
+  font-family: var(--font-display);
+  font-size: 5.5rem;
+  font-weight: 700;
+  line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+  color: #f8fafc;
+}
+
+.stealth-hud__speed-unit {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.24em;
+  color: #475569;
+}
+
+.stealth-hud__speaker {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.1em;
+}
+
+.stealth-hud__speaker-live {
+  color: #00e676;
+}
+
+.stealth-hud__speaker-idle {
+  color: #334155;
+}
+
+.stealth-hud__mic-pill {
+  padding: 16px 32px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stealth-hud__mic-pill.is-live {
+  border: 2px solid #00e676;
+  color: #00e676;
+}
+
+.stealth-hud__mic-pill.is-muted {
+  border: 2px solid #ff3d57;
+  color: #ff3d57;
+}
+
+.stealth-hud__hint {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: #475569;
+}
+
+/* ==========================================================================
+   MODALS, SETTINGS & RIDE SUMMARY
+   ========================================================================== */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(4, 6, 10, 0.8);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 14px;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 430px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 22px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.modal-card--sheet {
+  align-items: stretch;
+}
+
+.modal-card__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-card__title {
+  margin: 2px 0 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+}
+
+.plate-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 10px;
+  border: 1.5px solid var(--accent-amber);
+  background: rgba(255, 107, 0, 0.12);
+  color: var(--accent-amber);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.plate-badge--large {
+  font-size: 1.5rem;
+  padding: 8px 22px;
+}
+
+.qr-frame {
+  padding: 12px;
+  border-radius: 16px;
+  background: #ffffff;
+  display: inline-flex;
+}
+
+.modal-card__hint {
+  margin: 0;
+  font-size: 0.82rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.modal-card__actions {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.setting-row__title {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.setting-row__desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.moto-switch {
+  width: 48px;
+  height: 28px;
+  accent-color: var(--accent-amber);
+  cursor: pointer;
+}
+
+.setting-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.voice-picker-row {
+  display: flex;
+  gap: 8px;
+}
+
+.moto-select {
+  flex: 1;
+  height: 44px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 0.84rem;
+}
+
+.btn-compact {
+  min-height: 44px;
+  padding: 0 14px;
+}
+
+.segmented-pills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.seg-pill {
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.seg-pill.is-active {
+  border-color: var(--accent-amber);
+  background: rgba(255, 107, 0, 0.16);
+  color: var(--accent-amber);
+}
+
+/* Ride Summary & Rejoin Gate */
+.summary-screen,
+.rejoin-gate {
+  justify-content: space-between;
+}
+
+.rejoin-gate {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+}
+
+.summary-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.summary-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+}
+
+.telemetry-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.stat-tile {
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-tile__label {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stat-tile__value {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-tile__value span {
+  font-size: 0.85rem;
+  color: var(--accent-cyan);
+}
+
+.route-preview-card,
+.pack-roster-box {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+}
+
+.route-preview-card__top,
+.pack-roster-box__label {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.route-svg {
+  width: 100%;
+  height: 120px;
+  background: var(--bg-input);
+  border-radius: 10px;
+}
+
+.route-empty {
+  padding: 24px 10px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.pack-roster-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.roster-chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-strong);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.summary-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+

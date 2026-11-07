@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="112" fill="#090B0E"/>
+  <rect x="20" y="20" width="472" height="472" rx="96" stroke="#1E2633" stroke-width="6"/>
+  <!-- Signal arcs -->
+  <path d="M362 112C396 132 420 164 430 202" stroke="#00E676" stroke-width="14" stroke-linecap="round"/>
+  <path d="M388 80C432 106 462 148 474 198" stroke="#00E676" stroke-opacity="0.45" stroke-width="12" stroke-linecap="round"/>
+  <!-- Full-face sport motorcycle helmet silhouette -->
+  <path d="M108 292C104 190 172 118 268 118C346 118 402 168 412 246L418 294C420 314 408 334 388 342L274 388C246 398 214 396 188 380L132 346C116 336 109 314 108 292Z" fill="#161C26" stroke="#FF6B00" stroke-width="16" stroke-linejoin="round"/>
+  <!-- Racing stripe -->
+  <path d="M168 144C214 122 276 122 326 146L294 188C258 172 214 172 182 186L168 144Z" fill="#FF6B00"/>
+  <!-- Aerodynamic visor -->
+  <path d="M236 210H398L410 278L266 306C240 311 218 290 220 264L224 222C225 215 230 210 236 210Z" fill="#00E5FF" fill-opacity="0.22" stroke="#00E5FF" stroke-width="12" stroke-linejoin="round"/>
+  <!-- Chin vent / intercom mic pod -->
+  <rect x="292" y="330" width="76" height="22" rx="11" fill="#FF6B00"/>
+  <circle cx="236" cy="341" r="14" fill="#00E676"/>
+</svg>
